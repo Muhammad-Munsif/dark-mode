@@ -1,0 +1,117 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f1f3f5;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* animations.css */
+.sidebar-icon {
+  transition: transform 0.3s ease;
+}
+
+.icon-animate {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.dropdown-menu {
+  display: none;
+  min-width: 150px;
+  z-index: 1000;
+}
+
+.show-dropdown {
+  display: block !important;
+}
+
+body.dark-mode {
+  background-color: #212529;
+  color: #f8f9fa;
+}
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  background-color: #343a40;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+.sidebar.collapsed {
+  margin-left: -250px;
+}
+
+.sidebar a {
+  color: #adb5bd;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s;
+}
+
+.sidebar a:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.content {
+  flex-grow: 1;
+  padding: 1.5rem;
+  transition: all 0.3s;
+}
+
+.card {
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar-toggle-btn {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #343a40;
+}
+
+.dark-mode .sidebar-toggle-btn {
+  color: #f8f9fa;
+}
+
+.task-item,
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.notification-item a {
+  text-decoration: none;
+  color: #0d6efd;
+}
+
+.dark-mode .card {
+  background-color: #343a40;
+  color: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    z-index: 1000;
+    height: 100vh;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+}
