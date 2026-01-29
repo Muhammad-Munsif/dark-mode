@@ -1,4 +1,4 @@
-<script>
+
     // Toggle Sidebar
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
@@ -173,4 +173,4 @@
 
     // Initialize on load
     window.dispatchEvent(new Event('resize'));
-  </script>
+  
