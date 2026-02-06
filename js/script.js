@@ -66,7 +66,6 @@ function toggleDarkMode() {
     updateChartColors();
   }
 }
-
 // Toggle User Dropdown
 function toggleUserDropdown() {
   const dropdown = document.getElementById('userDropdown');
@@ -88,13 +87,11 @@ document.addEventListener('click', function (event) {
     toggleSidebar();
   }
 });
-
 // Initialize Chart
 let myChart;
 function initChart() {
   const ctx = document.getElementById('chart').getContext('2d');
   const isDarkMode = document.body.classList.contains('dark-mode');
-
   const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
   const textColor = isDarkMode ? '#f1f5f9' : '#1e293b';
   const borderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
@@ -188,7 +185,6 @@ function initChart() {
     },
   });
 }
-
 // Update chart colors
 function updateChartColors() {
   if (!myChart) return;
@@ -212,7 +208,6 @@ function updateChartColors() {
 
   myChart.update();
 }
-
 // Initialize on load
 document.addEventListener('DOMContentLoaded', function () {
   // Check for saved dark mode preference
@@ -220,12 +215,10 @@ document.addEventListener('DOMContentLoaded', function () {
   if (savedDarkMode) {
     document.body.classList.add('dark-mode');
   }
-
   // Initialize chart
   if (document.getElementById('chart')) {
     initChart();
   }
-
   // Add animation to cards on load
   document.querySelectorAll('.stat-card').forEach((card, index) => {
     card.style.animationDelay = `${index * 0.1}s`;
@@ -237,12 +230,10 @@ document.addEventListener('DOMContentLoaded', function () {
 window.addEventListener('resize', function () {
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('sidebarOverlay');
-
   if (window.innerWidth > 992) {
     overlay.classList.remove('show');
     sidebar.classList.remove('show');
   }
 });
-
 // Initialize
 window.dispatchEvent(new Event('resize'));
