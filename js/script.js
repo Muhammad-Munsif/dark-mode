@@ -1,4 +1,4 @@
- <script>
+
     // Page titles mapping
     const pageTitles = {
       dashboard: 'Dashboard Overview',
@@ -246,4 +246,3 @@
 
     // Initialize
     window.dispatchEvent(new Event('resize'));
-  </script>
