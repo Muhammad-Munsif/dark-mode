@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Pro - Multi-Page Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-x: hidden;
+    }
+
+    body.dark-mode {
+      background-color: #0f172a;
+      color: #f1f5f9;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+
+    .dark-mode ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    .dark-mode ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Wrapper & Layout */
+    .wrapper {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    /* Enhanced Sidebar */
+    .sidebar {
+      min-width: 280px;
+      background: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%);
+      color: #fff;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      overflow-y: auto;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dark-mode .sidebar {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    }
+
+    .sidebar.collapsed {
+      margin-left: -280px;
+    }
+
+    .sidebar-header {
+      padding: 1.75rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-container {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .sidebar-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+      background: linear-gradient(to right, #fff, #e2e8f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sidebar-content {
+      padding: 1.5rem;
+    }
+
+    .nav-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+    }
+
+    .sidebar a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.875rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 12px;
+      transition: all 0.3s;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+      transform: scaleY(0);
+      transition: transform 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transform: translateX(5px);
+    }
+
+    .sidebar a:hover::before,
+    .sidebar a.active::before {
+      transform: scaleY(1);
+    }
+
+    .sidebar a.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar a i {
+      font-size: 1.25rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .badge {
+      margin-left: auto;
+      padding: 0.35em 0.65em;
+      font-size: 0.75em;
+      font-weight: 600;
+      border-radius: 50px;
+    }
+
+    .sidebar-footer {
+      padding: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: auto;
+    }
+
+    .user-profile-mini {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.3s;
+    }
+
+    .user-profile-mini:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .user-avatar-mini {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    /* Content Area */
+    .content {
+      flex-grow: 1;
+      padding: 1.5rem;
+      transition: all 0.3s;
+      margin-left: 280px;
+      width: calc(100% - 280px);
+    }
+
+    .sidebar.collapsed~.content {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    /* Enhanced Top Navbar */
+    .top-navbar {
+      background: linear-gradient(90deg, #ffffff, #f8fafc);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+      border-radius: 16px;
+      padding: 1rem 1.75rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(226, 232, 240, 0.5);
+    }
+
+    .dark-mode .top-navbar {
+      background: linear-gradient(90deg, #1e293b, #0f172a);
+      border-color: rgba(71, 85, 105, 0.5);
+    }
+
+    .top-navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sidebar-toggle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border: none;
+      color: white;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-toggle-btn:hover {
+      transform: rotate(90deg);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .navbar-brand {
+      font-size: 1.375rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .dark-mode .navbar-brand {
+      background: linear-gradient(135deg, #60a5fa, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Top Navbar Right */
+    .top-navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    /* Dark Mode Toggle */
+    .dark-mode-toggle {
+      position: relative;
+      width: 60px;
+      height: 32px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #475569, #64748b);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      overflow: hidden;
+    }
+
+    .dark-mode-toggle::before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+    }
+
+    .dark-mode .dark-mode-toggle::before {
+      content: '☀️';
+      transform: translateX(28px);
+      background: #fbbf24;
+    }
+
+    .dark-mode-toggle::after {
+      content: '🌙';
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.875rem;
+    }
+
+    .dark-mode .dark-mode-toggle::after {
+      content: '';
+    }
+
+    /* Enhanced Cards */
+    .card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      background: white;
+    }
+
+    .dark-mode .card {
+      background: #1e293b;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-header {
+      background: transparent;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1.5rem;
+      font-weight: 600;
+      font-size: 1.125rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .dark-mode .card-header {
+      border-bottom-color: #334155;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    /* Dashboard Stats Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #ffffff, #f8fafc);
+      padding: 1.75rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      transition: all 0.4s;
+      border: 1px solid rgba(226, 232, 240, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dark-mode .stat-card {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border-color: rgba(71, 85, 105, 0.5);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    }
+
+    .stat-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .dark-mode .stat-value {
+      background: linear-gradient(135deg, #60a5fa, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .dark-mode .stat-label {
+      color: #94a3b8;
+    }
+
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    /* Chart Container */
+    .chart-container {
+      position: relative;
+      height: 320px;
+      width: 100%;
+    }
+
+    /* Task Items */
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      background: #f8fafc;
+      transition: all 0.3s;
+    }
+
+    .dark-mode .task-item {
+      background: #1e293b;
+    }
+
+    .task-item:hover {
+      background: #f1f5f9;
+      transform: translateX(4px);
+    }
+
+    .dark-mode .task-item:hover {
+      background: #334155;
+    }
+
+    .task-item i {
+      font-size: 0.875rem;
+    }
+
+    /* Notification Items */
+    .notification-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      background: #f8fafc;
+      transition: all 0.3s;
+    }
+
+    .dark-mode .notification-item {
+      background: #1e293b;
+    }
+
+    .notification-item:hover {
+      background: #f1f5f9;
+      transform: translateX(4px);
+    }
+
+    .dark-mode .notification-item:hover {
+      background: #334155;
+    }
+
+    .notification-item i {
+      font-size: 1.25rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Page Content */
+    .page-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .page-content.active {
+      display: block;
+    }
+
+    /* Message List */
+    .message-list {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .message-item {
+      padding: 1.25rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dark-mode .message-item {
+      background: #1e293b;
+    }
+
+    .message-item:hover {
+      background: #f1f5f9;
+      transform: translateX(4px);
+    }
+
+    .dark-mode .message-item:hover {
+      background: #334155;
+    }
+
+    .message-item.unread {
+      background: #eff6ff;
+      border-left-color: #1d4ed8;
+    }
+
+    .dark-mode .message-item.unread {
+      background: rgba(30, 58, 138, 0.3);
+    }
+
+    /* Reports Grid */
+    .reports-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .report-card {
+      background: linear-gradient(135deg, #ffffff, #f8fafc);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s;
+      border: 1px solid rgba(226, 232, 240, 0.5);
+    }
+
+    .dark-mode .report-card {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border-color: rgba(71, 85, 105, 0.5);
+    }
+
+    .report-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Mobile Overlay */
+    .mobile-sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .sidebar {
+        margin-left: -280px;
+      }
+
+      .sidebar.show {
+        margin-left: 0;
+      }
+
+      .content {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .mobile-sidebar-overlay.show {
+        display: block;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 1rem;
+      }
+
+      .top-navbar {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .top-navbar-left,
+      .top-navbar-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .reports-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-value {
+        font-size: 1.75rem;
+      }
+
+      .chart-container {
+        height: 280px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .card-body {
+        padding: 1.25rem;
+      }
+
+      .stat-card {
+        padding: 1.5rem;
+      }
+
+      .sidebar-header h3 {
+        font-size: 1.25rem;
+      }
+
+      .sidebar {
+        min-width: 250px;
+      }
+    }
+
+    /* Loading Animation */
+    .loading {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent);
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% {
+        left: -100%;
+      }
+
+      100% {
+        left: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- Mobile Overlay for Sidebar -->
+    <div class="mobile-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-container">
+          <i class="bi bi-speedometer2 text-white"></i>
+        </div>
+        <h3>Dashboard Pro</h3>
+      </div>
+      <div class="sidebar-content">
+        <div class="nav-category">Main</div>
+        <a href="#" class="active" onclick="showPage('dashboard')">
+          <i class="bi bi-house-door-fill"></i> Dashboard
+        </a>
+        <a href="#" onclick="showPage('messages')">
+          <i class="bi bi-envelope-fill"></i> Messages
+          <span class="badge bg-primary" id="messageCount">3</span>
+        </a>
+        <a href="#" onclick="showPage('reports')">
+          <i class="bi bi-bar-chart-line-fill"></i> Reports
+        </a>
+        <a href="#" onclick="showPage('users')">
+          <i class="bi bi-people-fill"></i> Users
+        </a>
+
+        <div class="nav-category">Other</div>
+        <a href="#" onclick="showPage('analytics')">
+          <i class="bi bi-graph-up-arrow"></i> Analytics
+        </a>
+        <a href="#" onclick="showPage('calendar')">
+          <i class="bi bi-calendar-week-fill"></i> Calendar
+        </a>
+        <a href="#" onclick="showPage('settings')">
+          <i class="bi bi-gear-fill"></i> Settings
+        </a>
+        <a href="#" onclick="showPage('help')">
+          <i class="bi bi-question-circle-fill"></i> Help & Support
+        </a>
+      </div>
+      <div class="sidebar-footer">
+        <div class="user-profile-mini">
+          <div class="user-avatar-mini">AJ</div>
+          <div>
+            <div style="font-weight: 600;">Alex Johnson</div>
+            <div style="font-size: 0.75rem; opacity: 0.8;">Admin</div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class="content">
+      <!-- Top Navbar -->
+      <nav class="top-navbar">
+        <div class="top-navbar-left">
+          <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+            <i class="bi bi-list"></i>
+          </button>
+          <span class="navbar-brand" id="pageTitle">Dashboard Overview</span>
+        </div>
+        <div class="top-navbar-right">
+          <div style="position: relative;">
+            <i class="bi bi-bell-fill" style="font-size: 1.25rem; color: #64748b; cursor: pointer;"></i>
+            <span class="badge bg-danger" style="position: absolute; top: -8px; right: -8px; font-size: 0.6rem;">5</span>
+          </div>
+          <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"></button>
+          <div class="user-dropdown">
+            <button class="user-dropdown-toggle" onclick="toggleUserDropdown()"
+              style="background: none; border: none; display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+              <div class="user-avatar" style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600;">AJ</div>
+              <span class="user-name d-none d-md-inline" style="font-weight: 600;">Alex Johnson</span>
+              <i class="bi bi-chevron-down"></i>
+            </button>
+            <div class="dropdown-menu" id="userDropdown">
+              <a href="#" class="dropdown-item"><i class="bi bi-person-fill"></i> Profile</a>
+              <a href="#" class="dropdown-item"><i class="bi bi-envelope-fill"></i> Messages</a>
+              <a href="#" class="dropdown-item"><i class="bi bi-gear-fill"></i> Settings</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Dashboard Page -->
+      <div id="dashboard" class="page-content active">
+        <div class="dashboard-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.2)); color: #4f46e5;">
+              <i class="bi bi-eye-fill"></i>
+            </div>
+            <div class="stat-value">12,847</div>
+            <div class="stat-label">Total Views</div>
+            <div class="stat-trend text-success">
+              <i class="bi bi-arrow-up-right"></i> 12.5% increase
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2)); color: #22c55e;">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="stat-value">3,245</div>
+            <div class="stat-label">Active Users</div>
+            <div class="stat-trend text-success">
+              <i class="bi bi-arrow-up-right"></i> 5.3% increase
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2)); color: #ef4444;">
+              <i class="bi bi-cart-fill"></i>
+            </div>
+            <div class="stat-value">892</div>
+            <div class="stat-label">Orders</div>
+            <div class="stat-trend text-warning">
+              <i class="bi bi-arrow-right"></i> No change
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.2)); color: #f97316;">
+              <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <div class="stat-value">$24,580</div>
+            <div class="stat-label">Revenue</div>
+            <div class="stat-trend text-success">
+              <i class="bi bi-arrow-up-right"></i> 18.2% increase
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart Card -->
+        <div class="card">
+          <div class="card-header">
+            <i class="bi bi-bar-chart-fill"></i> Performance Overview
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Content Cards -->
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <i class="bi bi-list-task"></i> Recent Tasks
+              </div>
+              <div class="card-body">
+                <div class="task-item">
+                  <i class="bi bi-circle text-primary"></i>
+                  <span>Update user documentation</span>
+                  <span class="badge bg-primary ms-auto">Today</span>
+                </div>
+                <div class="task-item">
+                  <i class="bi bi-circle text-success"></i>
+                  <span>Fix mobile responsive issues</span>
+                  <span class="badge bg-success ms-auto">Completed</span>
+                </div>
+                <div class="task-item">
+                  <i class="bi bi-circle text-warning"></i>
+                  <span>Prepare quarterly report</span>
+                  <span class="badge bg-warning ms-auto">Pending</span>
+                </div>
+                <div class="task-item">
+                  <i class="bi bi-circle text-info"></i>
+                  <span>Design new dashboard layout</span>
+                  <span class="badge bg-info ms-auto">In Progress</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <i class="bi bi-bell-fill"></i> Notifications
+              </div>
+              <div class="card-body">
+                <div class="notification-item">
+                  <i class="bi bi-person-plus text-primary"></i>
+                  <div>
+                    <strong>New user registered</strong>
+                    <div class="small text-muted">5 minutes ago</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <i class="bi bi-cart-check text-success"></i>
+                  <div>
+                    <strong>Order #12345 completed</strong>
+                    <div class="small text-muted">2 hours ago</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <i class="bi bi-exclamation-triangle text-warning"></i>
+                  <div>
+                    <strong>Server load is high</strong>
+                    <div class="small text-muted">Yesterday</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <i class="bi bi-arrow-up-circle text-info"></i>
+                  <div>
+                    <strong>Website traffic increased by 30%</strong>
+                    <div class="small text-muted">2 days ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages Page -->
+      <div id="messages" class="page-content">
+        <div class="card">
+          <div class="card-header">
+            <i class="bi bi-envelope-fill"></i> Messages
+            <button class="btn btn-primary btn-sm ms-auto">
+              <i class="bi bi-plus-lg"></i> New Message
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="message-list">
+              <div class="message-item unread">
+                <div>
+                  <strong>Sarah Johnson</strong>
+                  <div class="small text-muted">Meeting about the new project</div>
+                  <div class="small text-muted mt-1">Hi Alex, let's schedule a meeting to discuss...</div>
+                </div>
+                <div class="ms-auto text-end">
+                  <div class="small text-muted">10:30 AM</div>
+                  <span class="badge bg-primary mt-1">2</span>
+                </div>
+              </div>
+              <div class="message-item">
+                <div>
+                  <strong>Michael Chen</strong>
+                  <div class="small text-muted">Quarterly report review</div>
+                  <div class="small text-muted mt-1">The quarterly report is ready for your review...</div>
+                </div>
+                <div class="ms-auto text-end">
+                  <div class="small text-muted">Yesterday</div>
+                </div>
+              </div>
+              <div class="message-item unread">
+                <div>
+                  <strong>Team Updates</strong>
+                  <div class="small text-muted">Weekly team meeting notes</div>
+                  <div class="small text-muted mt-1">Attached are the notes from our weekly meeting...</div>
+                </div>
+                <div class="ms-auto text-end">
+                  <div class="small text-muted">2 days ago</div>
+                  <span class="badge bg-primary mt-1">1</span>
+                </div>
+              </div>
+              <!-- More messages... -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports Page -->
+      <div id="reports" class="page-content">
+        <div class="reports-grid">
+          <div class="report-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2)); color: #3b82f6;">
+              <i class="bi bi-graph-up"></i>
+            </div>
+            <h5>Sales Report</h5>
+            <p class="text-muted">Monthly sales performance analysis</p>
+            <button class="btn btn-outline-primary btn-sm mt-2">View Report</button>
+          </div>
+          <div class="report-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2)); color: #10b981;">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <h5>User Analytics</h5>
+            <p class="text-muted">User engagement and growth metrics</p>
+            <button class="btn btn-outline-primary btn-sm mt-2">View Report</button>
+          </div>
+          <div class="report-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2)); color: #f59e0b;">
+              <i class="bi bi-cash-stack"></i>
+            </div>
+            <h5>Revenue Report</h5>
+            <p class="text-muted">Quarterly revenue breakdown</p>
+            <button class="btn btn-outline-primary btn-sm mt-2">View Report</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Page -->
+      <div id="users" class="page-content">
+        <div class="card">
+          <div class="card-header">
+            <i class="bi bi-people-fill"></i> Users Management
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Alex Johnson</td>
+                  <td>alex@example.com</td>
+                  <td><span class="badge bg-primary">Admin</span></td>
+                  <td><span class="badge bg-success">Active</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                  </td>
+                </tr>
+                <!-- More users... -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics Page -->
+      <div id="analytics" class="page-content">
+        <div class="card">
+          <div class="card-header">
+            <i class="bi bi-graph-up-arrow"></i> Advanced Analytics
+          </div>
+          <div class="card-body">
+            <p>Analytics page content goes here...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other pages follow similar structure -->
+    </div>
+  </div>
+
+  <script>
+    // Page titles mapping
+    const pageTitles = {
+      dashboard: 'Dashboard Overview',
+      messages: 'Messages',
+      reports: 'Reports',
+      users: 'Users Management',
+      analytics: 'Advanced Analytics',
+      calendar: 'Calendar',
+      settings: 'Settings',
+      help: 'Help & Support'
+    };
+
+    // Toggle Sidebar
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+
+      sidebar.classList.toggle('show');
+      overlay.classList.toggle('show');
+
+      if (window.innerWidth > 992) {
+        sidebar.classList.toggle('collapsed');
+        overlay.classList.remove('show');
+      }
+    }
+
+    // Show specific page
+    function showPage(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.page-content').forEach(page => {
+        page.classList.remove('active');
+      });
+
+      // Show selected page
+      const selectedPage = document.getElementById(pageId);
+      if (selectedPage) {
+        selectedPage.classList.add('active');
+      }
+
+      // Update page title
+      document.getElementById('pageTitle').textContent = pageTitles[pageId] || 'Dashboard';
+
+      // Update active nav link
+      document.querySelectorAll('.sidebar a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('onclick')?.includes(pageId)) {
+          link.classList.add('active');
+        }
+      });
+
+      // Close sidebar on mobile
+      if (window.innerWidth <= 992) {
+        toggleSidebar();
+      }
+    }
+
+    // Toggle Dark Mode
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      localStorage.setItem('dark-mode', isDarkMode);
+      
+      // Update chart colors if chart exists
+      if (window.myChart) {
+        updateChartColors();
+      }
+    }
+
+    // Toggle User Dropdown
+    function toggleUserDropdown() {
+      const dropdown = document.getElementById('userDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('userDropdown');
+      const toggle = document.querySelector('.user-dropdown-toggle');
+      
+      if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+      
+      // Close mobile overlay
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay.classList.contains('show') && event.target === overlay) {
+        toggleSidebar();
+      }
+    });
+
+    // Initialize Chart
+    let myChart;
+    function initChart() {
+      const ctx = document.getElementById('chart').getContext('2d');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      
+      const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+      const textColor = isDarkMode ? '#f1f5f9' : '#1e293b';
+      const borderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
+      myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [
+            {
+              label: 'Revenue',
+              data: [6500, 8900, 12500, 14200, 16800, 19400, 22000, 24500, 27800, 31000, 34500, 38000],
+              borderColor: '#4f46e5',
+              backgroundColor: 'rgba(79, 70, 229, 0.1)',
+              fill: true,
+              tension: 0.4,
+              borderWidth: 3,
+            },
+            {
+              label: 'Users',
+              data: [1200, 1850, 2200, 3100, 4200, 5100, 6200, 7300, 8200, 9100, 10200, 11500],
+              borderColor: '#22c55e',
+              backgroundColor: 'rgba(34, 197, 94, 0.1)',
+              fill: true,
+              tension: 0.4,
+              borderWidth: 3,
+            }
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                color: textColor,
+                font: {
+                  size: 14,
+                  family: "'Inter', sans-serif"
+                }
+              }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+              backgroundColor: isDarkMode ? '#1e293b' : 'white',
+              titleColor: textColor,
+              bodyColor: textColor,
+              borderColor: borderColor,
+              borderWidth: 1
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: gridColor,
+              },
+              ticks: {
+                color: textColor,
+                font: {
+                  family: "'Inter', sans-serif"
+                }
+              },
+              border: {
+                color: borderColor
+              }
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: gridColor,
+              },
+              ticks: {
+                color: textColor,
+                font: {
+                  family: "'Inter', sans-serif"
+                },
+                callback: function(value) {
+                  if (value >= 1000) {
+                    return '$' + (value / 1000) + 'k';
+                  }
+                  return '$' + value;
+                }
+              },
+              border: {
+                color: borderColor
+              }
+            },
+          },
+        },
+      });
+    }
+
+    // Update chart colors
+    function updateChartColors() {
+      if (!myChart) return;
+      
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+      const textColor = isDarkMode ? '#f1f5f9' : '#1e293b';
+      const borderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
+      myChart.options.scales.x.grid.color = gridColor;
+      myChart.options.scales.x.ticks.color = textColor;
+      myChart.options.scales.x.border.color = borderColor;
+      myChart.options.scales.y.grid.color = gridColor;
+      myChart.options.scales.y.ticks.color = textColor;
+      myChart.options.scales.y.border.color = borderColor;
+      myChart.options.plugins.legend.labels.color = textColor;
+      myChart.options.plugins.tooltip.backgroundColor = isDarkMode ? '#1e293b' : 'white';
+      myChart.options.plugins.tooltip.titleColor = textColor;
+      myChart.options.plugins.tooltip.bodyColor = textColor;
+      myChart.options.plugins.tooltip.borderColor = borderColor;
+
+      myChart.update();
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check for saved dark mode preference
+      const savedDarkMode = localStorage.getItem('dark-mode') === 'true';
+      if (savedDarkMode) {
+        document.body.classList.add('dark-mode');
+      }
+
+      // Initialize chart
+      if (document.getElementById('chart')) {
+        initChart();
+      }
+
+      // Add animation to cards on load
+      document.querySelectorAll('.stat-card').forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.style.animation = 'slideIn 0.5s ease forwards';
+      });
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+
+      if (window.innerWidth > 992) {
+        overlay.classList.remove('show');
+        sidebar.classList.remove('show');
+      }
+    });
+
+    // Initialize
+    window.dispatchEvent(new Event('resize'));
+  </script>
+</body>
+</html>
