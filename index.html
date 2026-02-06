@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- 
+
 </head>
 
 <body>
@@ -78,13 +78,16 @@
         <div class="top-navbar-right">
           <div style="position: relative;">
             <i class="bi bi-bell-fill" style="font-size: 1.25rem; color: #64748b; cursor: pointer;"></i>
-            <span class="badge bg-danger" style="position: absolute; top: -8px; right: -8px; font-size: 0.6rem;">5</span>
+            <span class="badge bg-danger"
+              style="position: absolute; top: -8px; right: -8px; font-size: 0.6rem;">5</span>
           </div>
           <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"></button>
           <div class="user-dropdown">
             <button class="user-dropdown-toggle" onclick="toggleUserDropdown()"
               style="background: none; border: none; display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-              <div class="user-avatar" style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600;">AJ</div>
+              <div class="user-avatar"
+                style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                AJ</div>
               <span class="user-name d-none d-md-inline" style="font-weight: 600;">Alex Johnson</span>
               <i class="bi bi-chevron-down"></i>
             </button>
@@ -103,7 +106,8 @@
       <div id="dashboard" class="page-content active">
         <div class="dashboard-grid">
           <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.2)); color: #4f46e5;">
+            <div class="stat-icon"
+              style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.2)); color: #4f46e5;">
               <i class="bi bi-eye-fill"></i>
             </div>
             <div class="stat-value">12,847</div>
@@ -114,7 +118,8 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2)); color: #22c55e;">
+            <div class="stat-icon"
+              style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2)); color: #22c55e;">
               <i class="bi bi-people-fill"></i>
             </div>
             <div class="stat-value">3,245</div>
@@ -125,7 +130,8 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2)); color: #ef4444;">
+            <div class="stat-icon"
+              style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2)); color: #ef4444;">
               <i class="bi bi-cart-fill"></i>
             </div>
             <div class="stat-value">892</div>
@@ -136,7 +142,8 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.2)); color: #f97316;">
+            <div class="stat-icon"
+              style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.2)); color: #f97316;">
               <i class="bi bi-graph-up-arrow"></i>
             </div>
             <div class="stat-value">$24,580</div>
@@ -284,7 +291,8 @@
       <div id="reports" class="page-content">
         <div class="reports-grid">
           <div class="report-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2)); color: #3b82f6;">
+            <div class="stat-icon"
+              style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2)); color: #3b82f6;">
               <i class="bi bi-graph-up"></i>
             </div>
             <h5>Sales Report</h5>
@@ -292,7 +300,8 @@
             <button class="btn btn-outline-primary btn-sm mt-2">View Report</button>
           </div>
           <div class="report-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2)); color: #10b981;">
+            <div class="stat-icon"
+              style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2)); color: #10b981;">
               <i class="bi bi-people-fill"></i>
             </div>
             <h5>User Analytics</h5>
@@ -300,7 +309,8 @@
             <button class="btn btn-outline-primary btn-sm mt-2">View Report</button>
           </div>
           <div class="report-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2)); color: #f59e0b;">
+            <div class="stat-icon"
+              style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2)); color: #f59e0b;">
               <i class="bi bi-cash-stack"></i>
             </div>
             <h5>Revenue Report</h5>
@@ -360,6 +370,7 @@
     </div>
   </div>
 
- 
+
 </body>
+
 </html>
